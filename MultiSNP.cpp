@@ -179,7 +179,7 @@ void AminoAcidSequence2 (string original, string mutated,string genename) {
     }
 
 }
-void AminoAcidSequence (string original, string mutated,string genename, int total_mut, ofstream& output_amino) {
+int AminoAcidSequence (string original, string mutated,string genename, int total_mut, ofstream& output_amino) {
 
     vector <int> indices;
     vector<vector <int> > allindices;
@@ -307,8 +307,7 @@ void AminoAcidSequence (string original, string mutated,string genename, int tot
     }
 
 
-
-    return;
+    return mut_ones.size();
 
 }
 
@@ -352,7 +351,7 @@ int MultiSNP(int argc, char** argv)
             if (line[0] != '#') {
 
                 vector<string> myvec = convertbytabb(line);
-                if (stoi(myvec[1]) == 117 || stoi(myvec[1]) == 181 || stoi(myvec[1]) == 69 || stoi(myvec[1]) == 133) {
+                if (stoi(myvec[1]) == 117 || stoi(myvec[1]) == 181 || stoi(myvec[1]) == 69 || stoi(myvec[1]) == 133 ||stoi(myvec[1]) == 141 || stoi(myvec[1]) == 77) {
                     //skip
                     //These are the flags for the unmapped reads
 
@@ -497,7 +496,14 @@ int MultiSNP(int argc, char** argv)
                         SNPDetails<<"\t"<<e2.first.first[i]<<"\t"<<e2.first.second[i]<<endl;
                     }
 
-                   AminoAcidSequence(name_sequence[e.first],mutated,e.first,e2.first.first.size(),AminoAcidSeqDetails);
+                   int num_of_mut_btw_startstop=AminoAcidSequence(name_sequence[e.first],mutated,e.first,e2.first.first.size(),AminoAcidSeqDetails);
+                   if(e2.first.first.size()- num_of_mut_btw_startstop>0)
+                   {
+                      cout<< "All"<< e2.first.first.size()<<endl;
+                      cout<< "BTW start  and stop"<< num_of_mut_btw_startstop<<endl;
+                     cout<< "Not btw start  and stop"<< e2.first.first.size()- num_of_mut_btw_startstop<<endl;
+                     cout<<endl;
+                   }
                   // AminoAcidSequence2(name_sequence[e.first],mutated,e.first);
                 }
 
@@ -609,5 +615,3 @@ int MultiSNP(int argc, char** argv)
     cout<<"Done!"<<endl;
         return 0;
 }
-
-
